@@ -9,6 +9,16 @@ type (
 	}
 )
 
+func (c *Client) logCall(method string, args ...interface{}) ([]LogSegment, error) {
+	var logSegments []LogSegment
+	err := c.Call(method, args, &logSegments)
+	if err != nil {
+		return nil, err
+	}
+
+	return logSegments, nil
+}
+
 // Read length bytes from name’s stdout log starting at offset.
 func (c *Client) ReadProcessStdoutLog(name string, offset int, length int) (string, error) {
 	return c.stringCall("supervisor.readProcessStdoutLog", name, offset, length)
@@ -21,7 +31,7 @@ func (c *Client) ReadProcessStderrLog(name string, offset int, length int) (stri
 
 // This is not implemented yet.
 func (c *Client) TailProcessStdoutLog(name string, offset int, length int) ([]LogSegment, error) {
-	return nil, FIXMENotImplementedError
+	return c.logCall("supervisor.tailProcessStdoutLog", name, offset, length)
 }
 
 // This is not implemented yet.
