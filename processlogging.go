@@ -16,6 +16,14 @@ func (c *Client) logCall(method string, args ...interface{}) (*LogSegment, error
 		return nil, err
 	}
 
+	if responses[0] == nil {
+		return &LogSegment{
+			Payload:  "",
+			Offset:   responses[1].(int64),
+			Overflow: responses[2].(bool),
+		}, nil
+	}
+
 	return &LogSegment{
 		Payload:  responses[0].(string),
 		Offset:   responses[1].(int64),
