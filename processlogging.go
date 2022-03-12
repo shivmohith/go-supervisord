@@ -48,7 +48,7 @@ func (c *Client) TailProcessStdoutLog(name string, offset int, length int) (*Log
 
 // This is not implemented yet.
 func (c *Client) TailProcessStderrLog(name string, offset int, length int) (*LogSegment, error) {
-	return nil, FIXMENotImplementedError
+	return c.logCall("supervisor.tailProcessStderrLog", name, offset, length)
 }
 
 // Clear the stdout and stderr logs for the process name and reopen them.
